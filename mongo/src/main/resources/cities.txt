@@ -1,0 +1,35 @@
+Amon Sul,757,305
+Ash Mountains,1528,759
+Barad Dur,1392,845
+Bree,618,388
+Crossings of Poros,1150,1091
+Dagorlad (Battle Plains),1321,696
+Dol Guldur,1144,561
+East Bight,1100,410
+Edhellond,886,993
+Edoras,861,824
+Emyn Muil,1142,671
+Erech,758,908
+Eryn Vorn,371,599
+Ettenmoors,871,158
+Falls of Rauros,1065,772
+Fangorn,949,662
+Forlindon,95,273
+Grey Havens,272,297
+Harlindon,229,522
+Helm's Deep,767,796
+Hobbiton,470,383
+Iron Hills,1418,204
+Isengard,692,641
+Lake Evendim,496,248
+Lond Daer,478,695
+Lorien,990,523
+Minas Morgul,1186,885
+Minas Tirith,1111,918
+Moria's Gate,835,490
+Ras Morthil,495,977
+Rivendell,884,326
+Sea of Nurnen,1422,1030
+Sea of Rhun,1464,505
+Tharbad,604,515
+The Lonely Mountain,1216,262

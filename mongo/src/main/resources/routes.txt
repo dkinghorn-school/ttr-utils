@@ -1,0 +1,101 @@
+Amon Sul,Bree,gray,1
+Amon Sul,Bree,gray,1
+Amon Sul,Ettenmoors,red,3
+Amon Sul,Rivendell,gray,2
+Amon Sul,Rivendell,gray,2
+Amon Sul,Tharbad,orange,2
+Ash Mountains,Barad Dur,red,2
+Ash Mountains,Sea of Nurnen,gray,4
+Ash Mountains,Sea of Rhun,blue,4
+Barad Dur,Dagorlad (Battle Plains),blue,2
+Barad Dur,Dagorlad (Battle Plains),yellow,2
+Barad Dur,Minas Morgul,gray,2
+Barad Dur,Minas Morgul,gray,2
+Barad Dur,Sea of Nurnen,white,4
+Barad Dur,Sea of Rhun,orange,5
+Bree,Hobbiton,gray,2
+Bree,Hobbiton,gray,2
+Bree,Lake Evendim,black,2
+Bree,Lake Evendim,white,2
+Bree,Tharbad,gray,2
+Crossings of Poros,Edhellond,orange,4
+Crossings of Poros,Minas Morgul,green,2
+Crossings of Poros,Minas Tirith,yellow,2
+Crossings of Poros,Sea of Nurnen,violet,4
+Dagorlad (Battle Plains),Dol Guldur,gray,3
+Dagorlad (Battle Plains),Emyn Muil,black,2
+Dagorlad (Battle Plains),Emyn Muil,orange,2
+Dagorlad (Battle Plains),Falls of Rauros,white,2
+Dagorlad (Battle Plains),Minas Morgul,gray,2
+Dagorlad (Battle Plains),Sea of Rhun,green,6
+Dol Guldur,East Bight,yellow,1
+Dol Guldur,Emyn Muil,red,2
+Dol Guldur,Lorien,black,2
+East Bight,Iron Hills,red,6
+East Bight,Lorien,green,3
+East Bight,Rivendell,orange,5
+East Bight,Sea of Rhun,violet,6
+East Bight,The Lonely Mountain,blue,4
+Edhellond,Erech,green,1
+Edhellond,Minas Tirith,black,4
+Edhellond,Ras Morthil,black,5
+Edoras,Erech,white,1
+Edoras,Falls of Rauros,black,2
+Edoras,Helm's Deep,gray,1
+Edoras,Helm's Deep,gray,1
+Edoras,Fangorn,yellow,2
+Edoras,Minas Tirith,violet,3
+Edoras,Minas Tirith,red,3
+Emyn Muil,Falls of Rauros,gray,1
+Emyn Muil,Falls of Rauros,gray,1
+Emyn Muil,Fangorn,gray,2
+Emyn Muil,Fangorn,gray,2
+Erech,Helm's Deep,orange,1
+Erech,Ras Morthil,blue,2
+Eryn Vorn,Harlindon,blue,2
+Eryn Vorn,Hobbiton,black,3
+Eryn Vorn,Tharbad,red,3
+Eryn Vorn,Lond Daer,green,3
+Ettenmoors,Lake Evendim,orange,6
+Ettenmoors,Rivendell,blue,2
+Ettenmoors,Rivendell,green,2
+Ettenmoors,The Lonely Mountain,gray,6
+Falls of Rauros,Minas Tirith,gray,1
+Falls of Rauros,Minas Tirith,gray,1
+Fangorn,Helm's Deep,white,2
+Fangorn,Isengard,black,2
+Fangorn,Isengard,green,2
+Fangorn,Lorien,gray,2
+Fangorn,Lorien,gray,2
+Forlindon,Grey Havens,violet,2
+Forlindon,Harlindon,red,4
+Forlindon,Lake Evendim,blue,5
+Grey Havens,Harlindon,white,3
+Grey Havens,Hobbiton,green,2
+Grey Havens,Hobbiton,orange,2
+Grey Havens,Lake Evendim,gray,3
+Harlindon,Hobbiton,yellow,4
+Helm's Deep,Isengard,gray,2
+Helm's Deep,Isengard,gray,2
+Helm's Deep,Ras Morthil,violet,6
+Hobbiton,Lake Evendim,red,1
+Hobbiton,Lake Evendim,violet,1
+Iron Hills,Sea of Rhun,yellow,5
+Iron Hills,The Lonely Mountain,black,3
+Isengard,Lond Daer,orange,3
+Isengard,Moria's Gate,blue,2
+Isengard,Moria's Gate,red,2
+Isengard,Ras Morthil,violet,6
+Isengard,Tharbad,gray,3
+Lond Daer,Ras Morthil,white,5
+Lond Daer,Tharbad,yellow,3
+Lorien,Moria's Gate,white,2
+Lorien,Rivendell,gray,2
+Lorien,Rivendell,gray,2
+Minas Morgul,Minas Tirith,gray,2
+Minas Morgul,Minas Tirith,gray,2
+Minas Morgul,Sea of Nurnen,blue,5
+Moria's Gate,Rivendell,violet,2
+Moria's Gate,Rivendell,yellow,2
+Moria's Gate,Tharbad,green,2
+Rivendell,The Lonely Mountain,white,6
