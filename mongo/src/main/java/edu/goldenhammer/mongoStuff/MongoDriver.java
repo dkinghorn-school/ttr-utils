@@ -139,7 +139,7 @@ public class MongoDriver {
     }
 
     public boolean setUser(MongoUser user) throws UnknownHostException {
-        DBCollection coll = getGameCollection();
+        DBCollection coll = getUserCollection();
         DBObject json = (DBObject) JSON.parse(Serializer.serialize(user));
         DBObject query = new BasicDBObject("username", new BasicDBObject("$eq",user.getUsername()));
         DBObject update = new BasicDBObject();
