@@ -32,8 +32,6 @@ public class MongoGameDAO implements IGameDAO{
     public static final int ROUTE_COUNT = 101;
     public static final int CITY_COUNT = 35;
     public static final int MAX_DESTINATION_CARDS = 76;
-
-
     private int betweenCheckpoint;
 
 
@@ -86,6 +84,11 @@ public class MongoGameDAO implements IGameDAO{
             }
         }
         return playerId;
+    }
+
+    @Override
+    public void setCheckpointLength(int checkpointLength){
+        betweenCheckpoint = checkpointLength;
     }
 
     @Override
