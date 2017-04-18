@@ -126,6 +126,15 @@ public class MongoGameDAO implements IGameDAO{
     }
 
     @Override
+    public void clear(){
+        try {
+            driver.clearAll();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public GameList getGames() {
         try{
             List<MongoGame> list = driver.getAllGames();

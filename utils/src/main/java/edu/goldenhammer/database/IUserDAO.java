@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface IUserDAO {
 
+
+    void clear();
     /**
      * Gets all the authentication information to return when logging in to the game, including username and access token,
      * contained in a Player object

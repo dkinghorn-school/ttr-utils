@@ -9,6 +9,7 @@ import edu.goldenhammer.mongoStuff.MongoGame;
 import edu.goldenhammer.mongoStuff.MongoUser;
 import javafx.util.Pair;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -22,6 +23,16 @@ public class MongoUserDAO implements IUserDAO{
     public MongoUserDAO(){
         driver = new MongoDriver();
     }
+
+    @Override
+    public void clear() {
+        try {
+            driver.clearAll();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public Player getPlayerInfo(String player) {
         try{
