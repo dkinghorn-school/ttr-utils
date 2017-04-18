@@ -28,13 +28,6 @@ public interface IUserDAO {
     Boolean login(String username, String password);
 
     /**
-     * Get an ArrayList of the usernames of the players in the given game
-     * @param gameID
-     * @return
-     */
-    List<String> getPlayers(String gameID);
-
-    /**
      *
      * @param username
      * @param password

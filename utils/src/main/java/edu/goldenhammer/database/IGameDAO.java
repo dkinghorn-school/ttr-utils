@@ -16,6 +16,13 @@ public interface IGameDAO {
      */
 
     /**
+     * Get an ArrayList of the usernames of the players in the given game
+     * @param gameID
+     * @return
+     */
+    List<String> getPlayers(String gameID);
+
+    /**
      *
      * @param name
      * @return
