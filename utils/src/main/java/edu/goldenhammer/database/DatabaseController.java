@@ -8,6 +8,25 @@ package edu.goldenhammer.database;
 public class DatabaseController {
 
     private static IDatabaseController singleton;
+    private static IGameDAO gameDAO;
+    private static IUserDAO userDAO;
+
+
+    public static IGameDAO getGameDAO(){
+        return gameDAO;
+    }
+
+    public static IUserDAO getUserDAO(){
+        return userDAO;
+    }
+
+    public static void setUserDAO(IUserDAO dao){
+        userDAO = dao;
+    }
+
+    public static void setGameDAO(IGameDAO dao){
+        gameDAO = dao;
+    }
 
     /**
      * @pre The PSQL database is able to connect with the credentials in the config
