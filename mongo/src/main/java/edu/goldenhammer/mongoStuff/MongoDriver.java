@@ -172,7 +172,13 @@ public class MongoDriver {
         return coll.update(query, push).getN() == 1;
     }
 
-
+    public void clearAll() throws UnknownHostException {
+        DBCollection coll = getGameCollection();
+        DBObject query = new BasicDBObject();
+        coll.remove(query);
+        coll = getUserCollection();
+        coll.remove(query);
+    }
 
 
 
