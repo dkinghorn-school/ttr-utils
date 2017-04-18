@@ -2,6 +2,7 @@ package edu.goldenhammer.server.commands;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.model.*;
 import edu.goldenhammer.server.Results;
 
@@ -20,7 +21,7 @@ public class LayTrackCommand extends BaseCommand {
 
     @Override
     public Results execute() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         if(dbc.canClaimRoute(getGameName(), getPlayerName(), track.getRoute_number()) &&
                 dbc.claimRoute(getGameName(), getPlayerName(), track.getRoute_number())) {
             dbc.removeTrainsFromPlayer(getGameName(), getPlayerName(), track.getLength());
@@ -33,7 +34,7 @@ public class LayTrackCommand extends BaseCommand {
     }
 
     public boolean validate() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         if(track.getColor() != null) {
             for (Color color : cards) {
                 if (color != Color.WILD && color != track.getColor()) {
@@ -59,7 +60,7 @@ public class LayTrackCommand extends BaseCommand {
 
     @Override
     public boolean isLastRound() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         return dbc.numTrainsLeft(getGameName(),getPlayerName()) <= 2
                 && !dbc.alreadyLastRound(getGameName());
     }

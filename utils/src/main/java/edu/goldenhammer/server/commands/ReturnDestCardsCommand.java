@@ -2,6 +2,7 @@ package edu.goldenhammer.server.commands;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.model.DestinationCard;
 import edu.goldenhammer.server.Results;
 import edu.goldenhammer.server.Serializer;
@@ -21,7 +22,7 @@ public class ReturnDestCardsCommand extends BaseCommand {
 
     //TODO: make this synchronized for part 1. make sure it's the right command number. if not, change it.
     public  Results execute() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         Results results = new Results();
         try {
             if(toReturn.size() == 0 || dbc.returnDestCards(getGameName(), getPlayerName(), toReturn)) {
@@ -51,7 +52,7 @@ public class ReturnDestCardsCommand extends BaseCommand {
 
     @Override
     public boolean endTurn() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         return dbc.allHandsInitialized(getGameName());
     }
 }

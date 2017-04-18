@@ -2,6 +2,7 @@ package edu.goldenhammer.model;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ResultsGenerator {
     }
 
     public List<EndResult> generateResults(String game_name) {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         //Use the Database to grab the right game
         GameModel endModel = dbc.getGameModel(game_name);
         //From the GameModel get the Player Data

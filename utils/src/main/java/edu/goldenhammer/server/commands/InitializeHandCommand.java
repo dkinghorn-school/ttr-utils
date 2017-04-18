@@ -3,6 +3,7 @@ package edu.goldenhammer.server.commands;
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
 
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.model.DestinationCard;
 import edu.goldenhammer.model.DrawnDestinationCards;
 import edu.goldenhammer.model.Hand;
@@ -25,7 +26,7 @@ public class InitializeHandCommand extends BaseCommand {
     }
 
     public Results execute() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
 
         Results results = new Results();
         hand = null;
@@ -53,7 +54,7 @@ public class InitializeHandCommand extends BaseCommand {
         hand = new Hand();
     }
 
-    private List<TrainCard> drawTrainCards(IDatabaseController dbc) {
+    private List<TrainCard> drawTrainCards(IGameDAO dbc) {
         List<TrainCard> trainCards = new ArrayList<>();
         //todo: see if we can assume this is 5
         for(int i = 0; i < 5; i++) {
@@ -64,7 +65,7 @@ public class InitializeHandCommand extends BaseCommand {
         return trainCards;
     }
 
-    private DrawnDestinationCards drawDestinationCards(IDatabaseController dbc) {
+    private DrawnDestinationCards drawDestinationCards(IGameDAO dbc) {
         List<DestinationCard> cards = new ArrayList<>();
         for(int i = 0; i < 3; i++) {
             DestinationCard destinationCard = dbc.drawRandomDestinationCard(getGameName(), getPlayerName());
