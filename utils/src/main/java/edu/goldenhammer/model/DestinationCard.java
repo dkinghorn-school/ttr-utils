@@ -27,4 +27,22 @@ public class DestinationCard implements Serializable{
     public int getPointsWorth() {
         return pointsWorth;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        } else if(!(o instanceof DestinationCard)) {
+            return false;
+        } else {
+            if(((DestinationCard) o).getCity1().equals(city1)) {
+                if(((DestinationCard) o).getCity2().equals(city2)) {
+                    if(((DestinationCard) o).getPointsWorth() == pointsWorth) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
 }

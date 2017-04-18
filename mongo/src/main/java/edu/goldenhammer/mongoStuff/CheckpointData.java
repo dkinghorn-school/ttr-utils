@@ -3,7 +3,6 @@ package edu.goldenhammer.mongoStuff;
 import edu.goldenhammer.model.GameModel;
 import edu.goldenhammer.model.Hand;
 
-
 import java.io.Serializable;
 import java.util.TreeMap;
 

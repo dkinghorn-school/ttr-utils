@@ -34,4 +34,20 @@ public class City implements Serializable{
             return false;
         }
     }
+
+    public double getX_location() {
+        return x_location;
+    }
+
+    public void setX_location(double x_location) {
+        this.x_location = x_location;
+    }
+
+    public double getY_location() {
+        return y_location;
+    }
+
+    public void setY_location(double y_location) {
+        this.y_location = y_location;
+    }
 }

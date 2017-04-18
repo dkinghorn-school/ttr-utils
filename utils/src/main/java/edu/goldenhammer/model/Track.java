@@ -66,6 +66,8 @@ public class Track {
         return owner;
     }
 
+    public void setOwner(int player) { this.owner = player; }
+
     public double getLocation1x() {
         return location1x;
     }

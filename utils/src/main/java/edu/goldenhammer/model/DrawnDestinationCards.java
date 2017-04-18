@@ -14,4 +14,6 @@ public class DrawnDestinationCards {
             this.cards[i] = cards.get(i);
         }
     }
+
+    public DestinationCard[] getCards() { return cards; }
 }

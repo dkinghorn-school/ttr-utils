@@ -1,11 +1,11 @@
 package edu.goldenhammer.model;
 
+import edu.goldenhammer.database.DatabaseController;
+import edu.goldenhammer.database.IDatabaseController;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import edu.goldenhammer.database.DatabaseController;
-import edu.goldenhammer.database.IDatabaseController;
 
 /**
  * Created by jon on 3/24/17.

@@ -1,14 +1,10 @@
 package edu.goldenhammer.mongoStuff;
 
-import com.google.gson.Gson;
 import com.mongodb.*;
-import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.util.JSON;
-import edu.goldenhammer.model.GameModel;
 import edu.goldenhammer.model.Message;
 import edu.goldenhammer.server.Serializer;
 import edu.goldenhammer.server.commands.BaseCommand;
-import org.bson.Document;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -40,7 +36,7 @@ public class MongoDriver {
         return getCollection("user");
     }
 
-    private boolean removeGame(String gameName) throws UnknownHostException {
+    public boolean removeGame(String gameName) throws UnknownHostException {
         DBCollection coll = getGameCollection();
         DBObject query = new BasicDBObject("gameName", gameName);
         return coll.remove(query).getN() == 1;

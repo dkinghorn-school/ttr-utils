@@ -1,7 +1,5 @@
 package edu.goldenhammer.model;
 
-//import edu.goldenhammer.database.postgresql.data_types.SQLTrainCard;
-
 import java.io.Serializable;
 
 /**
@@ -22,9 +20,4 @@ public class TrainCard implements Serializable{
         this.color = color;
     }
 
-    //TODO: make this work
-//    public static TrainCard parseDatabaseTrainCard(SQLTrainCard sqlTrainCard) {
-//        Color color = Color.getTrainCardColorFromString(sqlTrainCard.getTrainType());
-//        return new TrainCard(color);
-//    }
 }
