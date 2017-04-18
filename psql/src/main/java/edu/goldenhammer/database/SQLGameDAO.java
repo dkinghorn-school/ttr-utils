@@ -64,6 +64,11 @@ public class SQLGameDAO implements IGameDAO{
         }
     }
 
+   @Override
+    public void setCheckpointLength(int checkpointLength){
+        return;
+    }
+
     /**
      *
      * @param name the name the new game should have.
