@@ -40,7 +40,7 @@ public class MongoGameDAO implements IGameDAO{
         MAX_TRAIN=maxTrain;
         driver = new MongoDriver();
         mongoGames = new TreeMap<String, GameModel>();
-
+        allCities = new TreeMap<>();
         this.betweenCheckpoint = betweenCheckpoint;
 
     }
