@@ -69,6 +69,11 @@ public class SQLGameDAO implements IGameDAO{
         return;
     }
 
+    @Override
+    public void clear(){
+
+    }
+
     /**
      *
      * @param name the name the new game should have.

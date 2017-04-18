@@ -15,6 +15,8 @@ public interface IGameDAO {
     Game management
      */
 
+
+     void clear();
      void setCheckpointLength(int checkpointLength);
     /**
      * Get an ArrayList of the usernames of the players in the given game

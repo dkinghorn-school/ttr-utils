@@ -38,6 +38,11 @@ public class SQLUserDAO implements IUserDAO{
         }
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     /**
      * @param player_user_name the username associated with the Player to be returned
      * @pre the database connection is valid and the player_user_name is associated with a user already stored and the database schema has not been altered

@@ -22,6 +22,12 @@ public class MongoUserDAO implements IUserDAO{
     public MongoUserDAO(){
         driver = new MongoDriver();
     }
+
+    @Override
+    public void clear() {
+
+    }
+
     @Override
     public Player getPlayerInfo(String player) {
         try{
