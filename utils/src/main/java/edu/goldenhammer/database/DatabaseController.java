@@ -33,15 +33,15 @@ public class DatabaseController {
      *
      * @post an instance of DatabaseController is returned with a connection to the SQL database
      */
-    public static IDatabaseController getInstance(){
-//        if(singleton == null)
-//            singleton = new SQLController();
-        return singleton;
-    }
-
-    public static void setFirstInstance(int maxTrain) {
-//        singleton = new SQLController(maxTrain);
-    }
+//    public static IDatabaseController getInstance(){
+////        if(singleton == null)
+////            singleton = new SQLController();
+//        return singleton;
+//    }
+//
+//    public static void setFirstInstance(int maxTrain) {
+////        singleton = new SQLController(maxTrain);
+//    }
 
 
 }

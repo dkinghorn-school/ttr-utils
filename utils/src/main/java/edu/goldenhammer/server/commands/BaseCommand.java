@@ -2,6 +2,7 @@ package edu.goldenhammer.server.commands;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.server.Results;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public abstract class BaseCommand implements Serializable {
     }
 
     public boolean validate() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         return dbc.validateCommand(this);
     }
 
@@ -72,7 +73,7 @@ public abstract class BaseCommand implements Serializable {
     }
 
     protected void addToDatabase(boolean visibleToSelf, boolean visibleToAll) {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         dbc.addCommand(this, visibleToSelf, visibleToAll);
     }
 }

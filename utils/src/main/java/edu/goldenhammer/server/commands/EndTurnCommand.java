@@ -2,6 +2,7 @@ package edu.goldenhammer.server.commands;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.server.Results;
 
 /**
@@ -16,7 +17,7 @@ public class EndTurnCommand extends BaseCommand {
 
     @Override
     public Results execute() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         dbc.addCommand(this,true,true);
         addToDatabase(true, true);
         return new Results();

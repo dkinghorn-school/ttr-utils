@@ -2,6 +2,7 @@ package edu.goldenhammer.server.commands;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.model.DestinationCard;
 import edu.goldenhammer.server.Results;
 import edu.goldenhammer.server.Serializer;
@@ -36,7 +37,7 @@ public class DrawDestCardsCommand extends BaseCommand {
     }
 
     private List<DestinationCard> getDestinationCards() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         List<DestinationCard> cards = new ArrayList<>();
         for(int i = 0; i < 3; i++) {
             DestinationCard destinationCard = dbc.drawRandomDestinationCard(getGameName(), getPlayerName());

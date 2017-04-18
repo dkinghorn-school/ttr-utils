@@ -2,6 +2,7 @@ package edu.goldenhammer.server.commands;
 
 import edu.goldenhammer.database.DatabaseController;
 import edu.goldenhammer.database.IDatabaseController;
+import edu.goldenhammer.database.IGameDAO;
 import edu.goldenhammer.model.Color;
 import edu.goldenhammer.model.TrainCard;
 import edu.goldenhammer.server.Results;
@@ -19,7 +20,7 @@ public class DrawTrainCardCommand extends BaseCommand {
     private List<Color> bank;
 
     public Results execute() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         Results results = new Results();
         results.setResponseCode(200);
         if(slot >= 0 && slot <= 4) {
@@ -61,12 +62,12 @@ public class DrawTrainCardCommand extends BaseCommand {
     }
 
     private boolean hasDrawnTwo() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         return dbc.hasDrawnTwoTrainCards(getGameName(), getPlayerName());
     }
 
     private boolean drawingWildCardOnSecondDraw() {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         if (slot == 5){
             return false;
         }
@@ -80,7 +81,7 @@ public class DrawTrainCardCommand extends BaseCommand {
     }
 
     private List<Color> getSlotCards(String game_name) {
-        IDatabaseController dbc = DatabaseController.getInstance();
+        IGameDAO dbc = DatabaseController.getGameDAO();
         return dbc.getSlotCardColors(game_name);
     }
 
