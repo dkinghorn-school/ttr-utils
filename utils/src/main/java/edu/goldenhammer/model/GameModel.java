@@ -1,5 +1,6 @@
 package edu.goldenhammer.model;
 
+import java.util.Map;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ public class GameModel implements IGameModel {
     private Map map;
     private GameName name;
     private List<Color> mBank;
+    private Map<String,Hand> hands;
     private int checkpointIndex;
     private int currentTurn;
 
@@ -19,6 +21,10 @@ public class GameModel implements IGameModel {
         this.name = name;
         this.mBank = mBank;
         checkpointIndex = -1;
+    }
+
+    public void setHands(Map<String, Hand> hands){
+        this.hands = hands;
     }
 
     public int getCurrentTurn() {

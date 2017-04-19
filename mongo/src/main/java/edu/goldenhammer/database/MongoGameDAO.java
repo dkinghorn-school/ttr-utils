@@ -238,7 +238,9 @@ public class MongoGameDAO implements IGameDAO{
                 if (mg == null) {
                     return null;
                 } else if (mg.getCheckpoint() != null) {
-                    return new MongoDriver().getGame(gameID).getCheckpoint();
+                    GameModel game = driver.getGame(gameID).getCheckpoint();
+                    game.setHands(mg.getHands());
+                    return game;
                 } else {
                     List<PlayerOverview> leaderboard = new ArrayList<>();
 
