@@ -50,26 +50,28 @@ public class MongoGameDAO implements IGameDAO{
     }
 
     private MongoGame getGame(String game_name) {
-        MongoGame game;
-        if(mongoGames.containsKey(game_name)) {
-            game = mongoGames.get(game_name);
-        } else {
-            try {
-                game = driver.getGame(game_name);
-                if(game != null) {
-                    mongoGames.put(game_name, game);
+        synchronized (Lock.getInstance().getLock(game_name)){
+            MongoGame game;
+            if(mongoGames.containsKey(game_name)) {
+                game = mongoGames.get(game_name);
+            } else {
+                try {
+                    game = driver.getGame(game_name);
+                    if(game != null) {
+                        mongoGames.put(game_name, game);
+                    }
+                } catch (UnknownHostException uh) {
+                    uh.printStackTrace();
+                    game = null;
                 }
-            } catch (UnknownHostException uh) {
-                uh.printStackTrace();
-                game = null;
             }
+            return game;
         }
-        return game;
+
     }
 
 
-
-    private int getPlayerNumber(MongoGame currentGame, String player_name) {
+    private  int getPlayerNumber(MongoGame currentGame, String player_name) {
         int playerId = -1;
         for(PlayerOverview player : currentGame.getCheckpoint().getPlayers()) {
             if(player.getUsername().equals(player_name)) {
@@ -90,7 +92,7 @@ public class MongoGameDAO implements IGameDAO{
     }
 
     @Override
-    public List<String> getPlayers(String gameID) {
+    public  List<String> getPlayers(String gameID) {
         try{
             MongoGame mg = driver.getGame(gameID);
             if (mg == null){
@@ -106,25 +108,27 @@ public class MongoGameDAO implements IGameDAO{
     }
 
     @Override
-    public Boolean createGame(String name) {
-        try{
-            MongoGame g = driver.getGame(name);
-            if (g == null){
-                MongoGame creation = new MongoGame(name);
-                driver.setGame(creation);
-                return true;
-            }
-            else{
+    public  Boolean createGame(String name) {
+        synchronized (Lock.getInstance().getLock(name)) {
+            try {
+                MongoGame g = driver.getGame(name);
+                if (g == null) {
+                    MongoGame creation = new MongoGame(name);
+                    driver.setGame(creation);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
         }
     }
 
     @Override
     public void clear(){
+
         try {
             driver.clearAll();
         } catch (UnknownHostException e) {
@@ -167,46 +171,48 @@ public class MongoGameDAO implements IGameDAO{
 
     @Override
     public Boolean joinGame(String player, String gameName) {
-        try{
-            MongoGame mg = driver.getGame(gameName);
-            if (mg == null || mg.getPlayers().size() >= 5 || mg.getCheckpoint() != null){
-                return false;
-            }
-            else{
-                List<String> players = mg.getPlayers();
-                if(!players.contains(player))
-                    players.add(player);
-                mg.setPlayers(players);
-                driver.setGame(mg);
-                return true;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-    @Override
-    public Boolean leaveGame(String player, String gameName) {
-        try{
-            MongoGame mg = driver.getGame(gameName);
-            if (mg == null || mg.getCheckpoint() != null){
-                return false;
-            }
-            else{
-                List<String> players = mg.getPlayers();
-                if (!players.contains(player)){
+        synchronized (Lock.getInstance().getLock(gameName)) {
+            try {
+                MongoGame mg = driver.getGame(gameName);
+                if (mg == null || mg.getPlayers().size() >= 5 || mg.getCheckpoint() != null) {
                     return false;
-                }
-                else{
-                    players.remove(player);
+                } else {
+                    List<String> players = mg.getPlayers();
+                    if (!players.contains(player))
+                        players.add(player);
                     mg.setPlayers(players);
                     driver.setGame(mg);
                     return true;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
             }
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
+        }
+    }
+    @Override
+    public Boolean leaveGame(String player, String gameName) {
+        synchronized (Lock.getInstance().getLock(gameName)) {
+            try {
+                MongoGame mg = driver.getGame(gameName);
+                if (mg == null || mg.getCheckpoint() != null) {
+                    return false;
+                } else {
+                    List<String> players = mg.getPlayers();
+                    if (!players.contains(player)) {
+                        return false;
+                    } else {
+                        players.remove(player);
+                        mg.setPlayers(players);
+                        driver.setGame(mg);
+                        return true;
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
     }
 
@@ -224,46 +230,46 @@ public class MongoGameDAO implements IGameDAO{
 
     @Override
     public IGameModel playGame(String gameID) {
-        try{
-            MongoGame mg = getGame(gameID);
-            if (mg == null){
+        synchronized (Lock.getInstance().getLock(gameID)) {
+            try {
+                MongoGame mg = getGame(gameID);
+                if (mg == null) {
+                    return null;
+                } else if (mg.getCheckpoint() != null) {
+                    return mg.getCheckpoint();
+                } else {
+                    List<PlayerOverview> leaderboard = new ArrayList<>();
+
+                    for (int i = 0; i < mg.getPlayers().size(); i++) {
+                        leaderboard.add(new PlayerOverview(Color.getPlayerColorFromNumber(i), MAX_TRAIN, 0, i, mg.getPlayers().get(i), 0));
+                    }
+                    Map map = initializeMap();
+                    List<TrainCard> trainCardDeck = initializeTrainCards();
+                    List<DestinationCard> destCardDeck = initializeDestCards();
+                    List<Color> bank = new ArrayList<>();
+
+                    for (int i = 0; i < 5; i++) {
+                        bank.add((trainCardDeck.get(0).getColor()));
+                        trainCardDeck.remove(0);
+                    }
+
+
+                    GameName g = new GameName(gameID);
+                    GameModel model = new GameModel(leaderboard, map, g, bank);
+
+                    mg.setCheckpoint(model);
+                    mg.setCheckpointIndex(-1); //TODO should this be -1 or 0
+                    mg.setDestDeck(destCardDeck);
+                    mg.setTrainDeck(trainCardDeck);
+//                new MongoDriver().setGame(mg);
+                    if (mg.getCommands().size() == 0)
+                        initializeHands(mg);
+                    return model;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
-            else if (mg.getCheckpoint() != null){
-                return mg.getCheckpoint();
-            }
-            else{
-                List<PlayerOverview> leaderboard = new ArrayList<>();
-
-                for (int i=0; i< mg.getPlayers().size(); i++){
-                    leaderboard.add(new PlayerOverview(Color.getPlayerColorFromNumber(i),MAX_TRAIN,0,i, mg.getPlayers().get(i),0));
-                }
-                Map map = initializeMap();
-                List<TrainCard> trainCardDeck = initializeTrainCards();
-                List<DestinationCard> destCardDeck = initializeDestCards();
-                List<Color> bank = new ArrayList<>();
-
-                for (int i=0; i<5; i++){
-                    bank.add((trainCardDeck.get(0).getColor()));
-                    trainCardDeck.remove(0);
-                }
-
-
-                GameName g = new GameName(gameID);
-                GameModel model = new GameModel(leaderboard,map,g,bank);
-
-                mg.setCheckpoint(model);
-                mg.setCheckpointIndex(-1); //TODO should this be -1 or 0
-                mg.setDestDeck(destCardDeck);
-                mg.setTrainDeck(trainCardDeck);
-//                new MongoDriver().setGame(mg);
-                if(mg.getCommands().size() == 0)
-                    initializeHands(mg);
-                return model;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
         }
     }
 
