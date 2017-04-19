@@ -430,7 +430,8 @@ public class MongoGameDAO implements IGameDAO{
             hands.put(player_name, hand);
             mg.setHands(hands);
             checkpoint.setBank(bank);
-            mg.setCheckpoint(checkpoint);
+//            mg.setCheckpoint(checkpoint);
+            return new TrainCard(selected);
         }
         return null;
     }
