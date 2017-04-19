@@ -139,7 +139,7 @@ public class MongoGameDAO implements IGameDAO{
     @Override
     public GameList getGames() {
         try{
-            List<MongoGame> list = driver.getAllGames();
+            List<MongoGame> list = driver.getGamesNotStarted();
             GameList gameList = new GameList();
             for (MongoGame mg : list){
                 Boolean started = mg.getCheckpoint() != null;
