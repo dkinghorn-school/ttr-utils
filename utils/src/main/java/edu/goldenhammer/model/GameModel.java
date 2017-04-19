@@ -12,6 +12,7 @@ public class GameModel implements IGameModel {
     private GameName name;
     private List<Color> mBank;
     private Map<String,Hand> hands;
+    private boolean lastRound;
     private int checkpointIndex;
     private int currentTurn;
 
@@ -21,10 +22,15 @@ public class GameModel implements IGameModel {
         this.name = name;
         this.mBank = mBank;
         checkpointIndex = -1;
+        lastRound = false;
     }
 
     public void setHands(Map<String, Hand> hands){
         this.hands = hands;
+    }
+
+    public void setLastRound(boolean answer){
+        lastRound = answer;
     }
 
     public int getCurrentTurn() {

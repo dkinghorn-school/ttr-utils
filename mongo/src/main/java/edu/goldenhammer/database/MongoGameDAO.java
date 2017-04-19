@@ -706,6 +706,9 @@ public class MongoGameDAO implements IGameDAO{
             MongoGame game = getGame(cmd.getGameName());
             game.getCommands().add(cmd);
             game.getCheckpoint().setCheckpointIndex(cmd.getCommandNumber());
+            if(cmd instanceof LastTurnCommand){
+                game.getCheckpoint().setLastRound(true);
+            }
             if (!(game.getCommands().size() - (game.getCheckpointIndex() + 1) == betweenCheckpoint || !allHandsInitialized(cmd.getGameName()))) {
                 MongoGame oldgame = driver.getGame(cmd.getGameName());
                 oldgame.getCommands().add(cmd);
