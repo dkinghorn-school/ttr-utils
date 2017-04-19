@@ -18,7 +18,7 @@ public class GameModel implements IGameModel {
         this.map = map;
         this.name = name;
         this.mBank = mBank;
-        checkpointIndex = 0;
+        checkpointIndex = -1;
     }
 
     public int getCurrentTurn() {
