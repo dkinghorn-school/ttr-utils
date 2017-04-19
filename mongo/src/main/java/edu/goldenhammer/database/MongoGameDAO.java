@@ -4,14 +4,12 @@ import edu.goldenhammer.model.*;
 import edu.goldenhammer.model.Map;
 import edu.goldenhammer.mongoStuff.MongoDriver;
 import edu.goldenhammer.mongoStuff.MongoGame;
-import edu.goldenhammer.server.commands.BaseCommand;
-import edu.goldenhammer.server.commands.DrawTrainCardCommand;
-import edu.goldenhammer.server.commands.EndTurnCommand;
-import edu.goldenhammer.server.commands.LastTurnCommand;
+import edu.goldenhammer.server.commands.*;
 import javafx.util.Pair;
 
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Arrays.asList;
 /**
@@ -22,7 +20,7 @@ public class MongoGameDAO implements IGameDAO{
     private int MAX_TRAIN;
     private MongoDriver driver;
 
-    private TreeMap<String, City> allCities;
+    private ConcurrentHashMap<String, City> allCities;
 
     public static final int ROUTE_COUNT = 101;
     public static final int CITY_COUNT = 35;
@@ -30,12 +28,12 @@ public class MongoGameDAO implements IGameDAO{
     private int betweenCheckpoint;
 
 
-    private TreeMap mongoGames;
+    private ConcurrentHashMap<String,MongoGame> mongoGames;
     public MongoGameDAO(int maxTrain, int betweenCheckpoint) {
         MAX_TRAIN=maxTrain;
         driver = new MongoDriver();
-        mongoGames = new TreeMap<String, GameModel>();
-        allCities = new TreeMap<>();
+        mongoGames = new ConcurrentHashMap<>();
+        allCities = new ConcurrentHashMap<>();
         this.betweenCheckpoint = betweenCheckpoint;
 
     }
@@ -43,9 +41,9 @@ public class MongoGameDAO implements IGameDAO{
     public MongoGameDAO(){
         MAX_TRAIN=45;
         driver = new MongoDriver();
-        mongoGames = new TreeMap<String, GameModel>();
+        mongoGames = new ConcurrentHashMap<>();
 
-        allCities = new TreeMap<>();
+        allCities = new ConcurrentHashMap<>();
 
         betweenCheckpoint = 5;
 
@@ -54,7 +52,7 @@ public class MongoGameDAO implements IGameDAO{
     private MongoGame getGame(String game_name) {
         MongoGame game;
         if(mongoGames.containsKey(game_name)) {
-            game = (MongoGame) mongoGames.get(game_name);
+            game = mongoGames.get(game_name);
         } else {
             try {
                 game = driver.getGame(game_name);
@@ -176,7 +174,8 @@ public class MongoGameDAO implements IGameDAO{
             }
             else{
                 List<String> players = mg.getPlayers();
-                players.add(player);
+                if(!players.contains(player))
+                    players.add(player);
                 mg.setPlayers(players);
                 driver.setGame(mg);
                 return true;
@@ -226,7 +225,7 @@ public class MongoGameDAO implements IGameDAO{
     @Override
     public IGameModel playGame(String gameID) {
         try{
-            MongoGame mg = driver.getGame(gameID);
+            MongoGame mg = getGame(gameID);
             if (mg == null){
                 return null;
             }
@@ -239,6 +238,7 @@ public class MongoGameDAO implements IGameDAO{
                 for (int i=0; i< mg.getPlayers().size(); i++){
                     leaderboard.add(new PlayerOverview(Color.getPlayerColorFromNumber(i),MAX_TRAIN,0,i, mg.getPlayers().get(i),0));
                 }
+                Map map = initializeMap();
                 List<TrainCard> trainCardDeck = initializeTrainCards();
                 List<DestinationCard> destCardDeck = initializeDestCards();
                 List<Color> bank = new ArrayList<>();
@@ -248,7 +248,7 @@ public class MongoGameDAO implements IGameDAO{
                     trainCardDeck.remove(0);
                 }
 
-                Map map = initializeMap();
+
                 GameName g = new GameName(gameID);
                 GameModel model = new GameModel(leaderboard,map,g,bank);
 
@@ -256,12 +256,25 @@ public class MongoGameDAO implements IGameDAO{
                 mg.setCheckpointIndex(-1); //TODO should this be -1 or 0
                 mg.setDestDeck(destCardDeck);
                 mg.setTrainDeck(trainCardDeck);
-
+//                new MongoDriver().setGame(mg);
+                if(mg.getCommands().size() == 0)
+                    initializeHands(mg);
                 return model;
             }
         }catch(Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private void initializeHands(MongoGame game){
+
+        for(int i = 0; i < game.getPlayers().size();i++) {
+            game.getHands().put(game.getPlayers().get(i), new Hand());
+            InitializeHandCommand newHand = new InitializeHandCommand();
+            newHand.setGameName(game.getGameName());
+            newHand.setPlayerName(game.getPlayers().get(i));
+            newHand.execute();
         }
     }
 
@@ -349,6 +362,16 @@ public class MongoGameDAO implements IGameDAO{
 
     @Override
     public boolean allHandsInitialized(String gameName) {
+        int initializedHands = 0;
+        List<BaseCommand> commands = getGame(gameName).getCommands();
+        for(BaseCommand cmd: commands){
+            if(cmd instanceof InitializeHandCommand){
+                initializedHands++;
+            }
+        }
+        if(initializedHands == getGame(gameName).getPlayers().size()){
+            return true;
+        }
         return false;
     }
 
@@ -504,15 +527,7 @@ public class MongoGameDAO implements IGameDAO{
         Random rand = new Random();
         int n = rand.nextInt(currentGame.getDestDeck().size());
         DestinationCard randomCard = currentGame.getDestDeck().get(n);
-
-        // Now remove that from the deck, putting it in limbo
-        Iterator<DestinationCard> it = currentGame.getDestDeck().iterator();
-        while(it.hasNext()) {
-            DestinationCard temp = it.next();
-            if(temp.equals(randomCard)) {
-                it.remove();
-            }
-        }
+        currentGame.getDestDeck().remove(n);
         return randomCard;
     }
 
@@ -679,6 +694,7 @@ public class MongoGameDAO implements IGameDAO{
         try {
             MongoGame game = getGame(cmd.getGameName());
             game.getCommands().add(cmd);
+            game.getCheckpoint().setCheckpointIndex(cmd.getCommandNumber());
             if (!(game.getCommands().size() - (game.getCheckpointIndex() + 1) == betweenCheckpoint)) {
                 MongoGame oldgame = driver.getGame(cmd.getGameName());
                 oldgame.getCommands().add(cmd);
