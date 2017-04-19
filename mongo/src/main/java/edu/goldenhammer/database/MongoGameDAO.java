@@ -238,7 +238,9 @@ public class MongoGameDAO implements IGameDAO{
                 if (mg == null) {
                     return null;
                 } else if (mg.getCheckpoint() != null) {
-                    return new MongoDriver().getGame(gameID).getCheckpoint();
+                    GameModel game = driver.getGame(gameID).getCheckpoint();
+                    game.setHands(mg.getHands());
+                    return game;
                 } else {
                     List<PlayerOverview> leaderboard = new ArrayList<>();
 
@@ -704,6 +706,9 @@ public class MongoGameDAO implements IGameDAO{
             MongoGame game = getGame(cmd.getGameName());
             game.getCommands().add(cmd);
             game.getCheckpoint().setCheckpointIndex(cmd.getCommandNumber());
+            if(cmd instanceof LastTurnCommand){
+                game.getCheckpoint().setLastRound(true);
+            }
             if (!(game.getCommands().size() - (game.getCheckpointIndex() + 1) == betweenCheckpoint || !allHandsInitialized(cmd.getGameName()))) {
                 MongoGame oldgame = driver.getGame(cmd.getGameName());
                 oldgame.getCommands().add(cmd);
