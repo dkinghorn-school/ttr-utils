@@ -12,6 +12,7 @@ public class GameModel implements IGameModel {
     private List<Color> mBank;
     private int checkpointIndex;
     private int currentTurn;
+    private String state;
 
     public GameModel(List<PlayerOverview> players, Map map, GameName name, List<Color> mBank) {
         this.players = players;
@@ -67,5 +68,13 @@ public class GameModel implements IGameModel {
 
     public void setBank(List<Color> mBank) {
         this.mBank = mBank;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

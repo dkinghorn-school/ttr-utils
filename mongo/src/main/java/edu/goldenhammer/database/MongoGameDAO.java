@@ -456,6 +456,9 @@ public class MongoGameDAO implements IGameDAO{
                     ++drawTrainCommandCount;
                 }
             }
+            if(drawTrainCommandCount == 1){
+                mg.getCheckpoint().setState("2ndtrain");
+            }
             return drawTrainCommandCount >= 2;
         } catch (Exception e) {
             e.printStackTrace();
@@ -536,6 +539,7 @@ public class MongoGameDAO implements IGameDAO{
         // Need to pull it out of the cards and put it into limbo...
         MongoGame currentGame = getGame(gameName);
         Random rand = new Random();
+        currentGame.getCheckpoint().setState("returnDestCards");
         int n = rand.nextInt(currentGame.getDestDeck().size());
         DestinationCard randomCard = currentGame.getDestDeck().get(n);
         currentGame.getDestDeck().remove(n);
@@ -724,7 +728,7 @@ public class MongoGameDAO implements IGameDAO{
         int numPlayers = currentGame.getCheckpoint().getPlayers().size();
         int playerId = getPlayerNumber(currentGame, playerName);
 
-
+        currentGame.getCheckpoint().setState("newTurn");
         newEndTurn.setPreviousPlayer(playerId);
         newEndTurn.setGameName(gameName);
         newEndTurn.setCommandNumber(commandNumber);
