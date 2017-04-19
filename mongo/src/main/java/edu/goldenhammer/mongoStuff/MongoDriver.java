@@ -174,10 +174,9 @@ public class MongoDriver {
 
     public void clearAll() throws UnknownHostException {
         DBCollection coll = getGameCollection();
-        DBObject query = new BasicDBObject();
-        coll.remove(query);
+        coll.drop();
         coll = getUserCollection();
-        coll.remove(query);
+        coll.drop();
     }
 
 

@@ -230,7 +230,7 @@ public class MongoGameDAO implements IGameDAO{
                 return null;
             }
             else if (mg.getCheckpoint() != null){
-                return mg.getCheckpoint();
+                return new MongoDriver().getGame(gameID).getCheckpoint();
             }
             else{
                 List<PlayerOverview> leaderboard = new ArrayList<>();
@@ -274,6 +274,8 @@ public class MongoGameDAO implements IGameDAO{
             InitializeHandCommand newHand = new InitializeHandCommand();
             newHand.setGameName(game.getGameName());
             newHand.setPlayerName(game.getPlayers().get(i));
+            newHand.setPlayerNumber(i);
+            newHand.setCommandNumber(i);
             newHand.execute();
         }
     }
@@ -365,11 +367,11 @@ public class MongoGameDAO implements IGameDAO{
         int initializedHands = 0;
         List<BaseCommand> commands = getGame(gameName).getCommands();
         for(BaseCommand cmd: commands){
-            if(cmd instanceof InitializeHandCommand){
+            if(cmd instanceof ReturnDestCardsCommand){
                 initializedHands++;
             }
         }
-        if(initializedHands == getGame(gameName).getPlayers().size()){
+        if(initializedHands >= getGame(gameName).getPlayers().size()){
             return true;
         }
         return false;
@@ -528,6 +530,8 @@ public class MongoGameDAO implements IGameDAO{
         int n = rand.nextInt(currentGame.getDestDeck().size());
         DestinationCard randomCard = currentGame.getDestDeck().get(n);
         currentGame.getDestDeck().remove(n);
+        java.util.Map<String, Hand> hands = currentGame.getHands();
+        hands.get(playerName).getDrawnDestinationCards().addCard(randomCard);
         return randomCard;
     }
 
@@ -561,20 +565,16 @@ public class MongoGameDAO implements IGameDAO{
         //Go through the discarded cards and make sure they are in the players hand
         for(DestinationCard disCard : destinationCards)
         {
-            boolean assigned = false;
-            Iterator<DestinationCard> it = playerCards.iterator();
-            while(it.hasNext()) {
-                DestinationCard playerCard = it.next();
-                if(disCard.equals(playerCard)) {
-                    assigned = true;
-                    currentGame.getDestDiscard().add(disCard);
-                    it.remove();
-                }
-            }
-            // The card was never drawn by that player...
-            if(!assigned) {
+            if(!playerCards.contains(disCard))
                 return false;
-            }
+        }
+        for(DestinationCard disCard : destinationCards)
+        {
+            currentGame.getDestDiscard().add(disCard);
+        }
+        for(DestinationCard desCard: playerCards) {
+            if(!destinationCards.contains(desCard))
+                playerHand.getDestinationCards().add(desCard);
         }
 
         playerHand.setDrawnDestinationCards(new DrawnDestinationCards(new ArrayList<DestinationCard>()));
@@ -695,7 +695,7 @@ public class MongoGameDAO implements IGameDAO{
             MongoGame game = getGame(cmd.getGameName());
             game.getCommands().add(cmd);
             game.getCheckpoint().setCheckpointIndex(cmd.getCommandNumber());
-            if (!(game.getCommands().size() - (game.getCheckpointIndex() + 1) == betweenCheckpoint)) {
+            if (!(game.getCommands().size() - (game.getCheckpointIndex() + 1) == betweenCheckpoint || !allHandsInitialized(cmd.getGameName()))) {
                 MongoGame oldgame = driver.getGame(cmd.getGameName());
                 oldgame.getCommands().add(cmd);
                 driver.setGame(oldgame);
@@ -715,10 +715,11 @@ public class MongoGameDAO implements IGameDAO{
         int numPlayers = currentGame.getCheckpoint().getPlayers().size();
         int playerId = getPlayerNumber(currentGame, playerName);
 
-        if(playerId > 0) {
-            newEndTurn.setPreviousPlayer(playerId-1);
-        }
 
+        newEndTurn.setPreviousPlayer(playerId);
+        newEndTurn.setGameName(gameName);
+        newEndTurn.setCommandNumber(commandNumber);
+        newEndTurn.setPlayerName(playerName);
         if(playerId < (numPlayers-1)) {
             newEndTurn.setNextPlayer(playerId+1);
         } else {
@@ -745,7 +746,7 @@ public class MongoGameDAO implements IGameDAO{
         MongoGame currentGame = getGame(command.getGameName());
 
         int commandNumber = command.getCommandNumber();
-        int lastCommandExecuted = currentGame.getCommands().get(currentGame.getCommands().size()-1).getCommandNumber();
+        int lastCommandExecuted = currentGame.getCommands().size() - 1;
         if(commandNumber == (lastCommandExecuted+1)) {
             valid = true;
         }

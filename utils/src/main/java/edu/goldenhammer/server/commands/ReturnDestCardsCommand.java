@@ -27,7 +27,7 @@ public class ReturnDestCardsCommand extends BaseCommand {
         try {
             if(toReturn.size() == 0 || dbc.returnDestCards(getGameName(), getPlayerName(), toReturn)) {
                 //TODO: do checking to make sure this adds. If it doesn't make sure it reverses what it did.
-                dbc.addCommand(this, true, false);
+//                dbc.addCommand(this, true, false);
                 results.setResponseCode(200);
                 Serializer serializer = new Serializer();
                 results.setMessage(serializer.serialize(this));
