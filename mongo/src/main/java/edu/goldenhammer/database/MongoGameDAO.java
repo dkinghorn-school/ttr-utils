@@ -1,6 +1,7 @@
 package edu.goldenhammer.database;
 
 import edu.goldenhammer.model.*;
+import edu.goldenhammer.model.Map;
 import edu.goldenhammer.mongoStuff.MongoDriver;
 import edu.goldenhammer.mongoStuff.MongoGame;
 import edu.goldenhammer.server.commands.BaseCommand;
@@ -10,13 +11,7 @@ import edu.goldenhammer.server.commands.LastTurnCommand;
 import javafx.util.Pair;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 /**
@@ -28,7 +23,7 @@ public class MongoGameDAO implements IGameDAO{
     private MongoDriver driver;
 
     private TreeMap<String, City> allCities;
-    private TreeMap<Pair<City,City>,Track> allTracks;
+
     public static final int ROUTE_COUNT = 101;
     public static final int CITY_COUNT = 35;
     public static final int MAX_DESTINATION_CARDS = 76;
@@ -291,6 +286,7 @@ public class MongoGameDAO implements IGameDAO{
         List<Track> trackList = new ArrayList<>();
         String pathName = "/routes.txt";
         Scanner routes = new Scanner(getClass().getResourceAsStream(pathName));
+        TreeSet<String> connections = new TreeSet<>();
         for (int i = 0; i < ROUTE_COUNT * 5; i += 5) {
             String route = routes.nextLine();
             String[] vars = route.split(",");
@@ -299,13 +295,14 @@ public class MongoGameDAO implements IGameDAO{
             int length = Integer.parseInt(vars[3]);
             int id = (i / 5) + 1;
             Color color = Color.getTrackColorFromString(vars[2]);
-            Boolean secondTrack = allTracks.containsKey(new Pair<>(city1,city2));
+            String destString = city1.getName() + city2.toString();
+            Boolean secondTrack = connections.contains(destString);
             Track t = new Track(city1,city2,length,color,-1,
                     city1.getX_location(),city1.getY_location(),
                     city2.getX_location(),city2.getY_location(),
                     id,secondTrack);
             trackList.add(t);
-            allTracks.put(new Pair<>(city1,city2),t);
+            connections.add(destString);
 
         }
         return trackList;
