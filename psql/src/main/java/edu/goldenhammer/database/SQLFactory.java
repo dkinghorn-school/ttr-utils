@@ -7,11 +7,11 @@ package edu.goldenhammer.database;
 public class SQLFactory implements AbstractFactory {
     @Override
     public IGameDAO getGameDAO() {
-        return null;
+        return new SQLGameDAO();
     }
 
     @Override
     public IUserDAO getUserDAO() {
-        return null;
+       return new SQLUserDAO();
     }
 }

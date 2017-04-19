@@ -18,6 +18,7 @@ public interface IGameDAO {
 
      void clear();
      void setCheckpointLength(int checkpointLength);
+    void setMaxTrains(int maxTrains);
     /**
      * Get an ArrayList of the usernames of the players in the given game
      * @param gameID

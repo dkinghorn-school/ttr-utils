@@ -70,6 +70,11 @@ public class SQLGameDAO implements IGameDAO{
     }
 
     @Override
+    public void setMaxTrains(int i) {
+        MAX_TRAIN = i;
+    }
+
+    @Override
     public void clear(){
 
     }

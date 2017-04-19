@@ -7,11 +7,11 @@ package edu.goldenhammer.database;
 public class MongoFactory implements AbstractFactory {
     @Override
     public IGameDAO getGameDAO() {
-        return null;
+       return new MongoGameDAO();
     }
 
     @Override
     public IUserDAO getUserDAO() {
-        return null;
+        return new MongoUserDAO();
     }
 }

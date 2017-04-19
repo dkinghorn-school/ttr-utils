@@ -92,6 +92,11 @@ public class MongoGameDAO implements IGameDAO{
     }
 
     @Override
+    public void setMaxTrains(int i) {
+        MAX_TRAIN = i;
+    }
+
+    @Override
     public List<String> getPlayers(String gameID) {
         try{
             MongoGame mg = driver.getGame(gameID);
