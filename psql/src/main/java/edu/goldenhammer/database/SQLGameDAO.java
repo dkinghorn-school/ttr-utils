@@ -69,9 +69,19 @@ public class SQLGameDAO implements IGameDAO{
         return;
     }
 
+    private void clearTable(String tableName) {
+        try (Connection connection = session.getConnection()) {
+            String sqlString = String.format("DELETE from %1$s",tableName);
+            PreparedStatement statement = connection.prepareStatement(sqlString);
+            statement.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void clear(){
-
+        clearTable(SQLGame.TABLE_NAME);
+        clearTable(SQLPlayer.TABLE_NAME);
     }
 
     /**
