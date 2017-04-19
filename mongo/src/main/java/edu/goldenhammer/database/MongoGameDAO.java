@@ -240,6 +240,10 @@ public class MongoGameDAO implements IGameDAO{
             }
             else{
                 List<PlayerOverview> leaderboard = new ArrayList<>();
+
+                for (int i=0; i< mg.getPlayers().size(); i++){
+                    leaderboard.add(new PlayerOverview(Color.getPlayerColorFromNumber(i),MAX_TRAIN,0,i, mg.getPlayers().get(i),0));
+                }
                 List<TrainCard> trainCardDeck = initializeTrainCards();
                 List<DestinationCard> destCardDeck = initializeDestCards();
                 List<Color> bank = new ArrayList<>();
