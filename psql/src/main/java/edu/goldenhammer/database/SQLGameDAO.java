@@ -79,6 +79,11 @@ public class SQLGameDAO implements IGameDAO{
         }
     }
     @Override
+    public void setMaxTrains(int i) {
+        MAX_TRAIN = i;
+    }
+
+    @Override
     public void clear(){
         clearTable(SQLGame.TABLE_NAME);
         clearTable(SQLPlayer.TABLE_NAME);
