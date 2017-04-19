@@ -31,13 +31,13 @@ public class DrawTrainCardCommand extends BaseCommand {
                 dbc.redealSlotCards(getGameName());
                 bank = getSlotCards(getGameName());
             }
-            dbc.addCommand(this, true, false);
+//            dbc.addCommand(this, true, false);
             results.setMessage(Serializer.serialize(this));
         } else if(slot == 5) {
             card = dbc.drawRandomTrainCard(getGameName(), getPlayerName());
             drawnCard = card.getColor();
             bank = getSlotCards(getGameName());
-            dbc.addCommand(this, true, false);
+//            dbc.addCommand(this, true, false);
             results.setMessage(Serializer.serialize(this));
         } else {
             results.setResponseCode(400);

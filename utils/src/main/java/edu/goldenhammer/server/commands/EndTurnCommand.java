@@ -18,7 +18,7 @@ public class EndTurnCommand extends BaseCommand {
     @Override
     public Results execute() {
         IGameDAO dbc = DatabaseController.getGameDAO();
-        dbc.addCommand(this,true,true);
+//        dbc.addCommand(this,true,true);
         addToDatabase(true, true);
         return new Results();
     }
