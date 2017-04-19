@@ -265,7 +265,7 @@ public class MongoGameDAO implements IGameDAO{
                     mg.setCheckpointIndex(-1); //TODO should this be -1 or 0
                     mg.setDestDeck(destCardDeck);
                     mg.setTrainDeck(trainCardDeck);
-//                new MongoDriver().setGame(mg);
+                    new MongoDriver().setGame(mg);
                     if (mg.getCommands().size() == 0)
                         initializeHands(mg);
                     return model;
@@ -713,7 +713,7 @@ public class MongoGameDAO implements IGameDAO{
             if(cmd instanceof LastTurnCommand){
                 game.getCheckpoint().setLastRound(true);
             }
-            if (!(game.getCommands().size() - (game.getCheckpointIndex() + 1) == betweenCheckpoint || !allHandsInitialized(cmd.getGameName()))) {
+            if ((game.getCommands().size() - (game.getCheckpointIndex() + 1) < betweenCheckpoint) || !allHandsInitialized(cmd.getGameName())) {
                 MongoGame oldgame = driver.getGame(cmd.getGameName());
                 oldgame.getCommands().add(cmd);
                 driver.setGame(oldgame);
